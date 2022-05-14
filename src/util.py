@@ -338,3 +338,19 @@ def process_config(config):
                 algorithm_params[alg["name"]][params_hash] = run_dict
 
     return config, datasets, out_dir, algorithm_params, algorithm_directed
+
+
+def compare_files(file1, file2) -> bool:
+    """
+    Compare files by reading the contents into lists. Only recommended for small files.
+    @param file1: first file to compare
+    @param file2: second file to compare
+    @return: True or False
+    """
+    with open(file1) as f1:
+        contents1 = list(f1)
+
+    with open(file2) as f2:
+        contents2 = list(f2)
+
+    return contents1 == contents2

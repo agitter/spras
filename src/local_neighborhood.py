@@ -1,4 +1,5 @@
 import pandas as pd
+from pathlib import Path
 from src.PRM import PRM
 from src.util import prepare_volume, run_container
 
@@ -60,11 +61,14 @@ class LocalNeighborhood(PRM):
         bind_path, node_file = prepare_volume(nodes, work_dir)
         volumes.append(bind_path)
 
-        bind_path, output_file = prepare_volume(nodes, output_file)
+        # Ensure that the local output directory exists
+        out_dir = Path(output_file).parent
+        out_dir.mkdir(parents=True, exist_ok=True)
+        bind_path, output_file = prepare_volume(output_file, work_dir)
         volumes.append(bind_path)
 
         command = ['python',
-                   'local_neighborhood.py',
+                   '/LocalNeighborhood/local_neighborhood.py',
                    '--network', network_file,
                    '--nodes', node_file,
                    '--output', output_file]

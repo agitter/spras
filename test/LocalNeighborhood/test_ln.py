@@ -1,7 +1,7 @@
-import filecmp
 import pytest
 import sys
 from pathlib import Path
+from src.util import compare_files
 from src.local_neighborhood import LocalNeighborhood
 # TODO consider refactoring to simplify the import
 # Modify the path because of the - in the directory
@@ -24,7 +24,7 @@ class TestLocalNeighborhood:
                            output_file=OUT_FILE)
         assert OUT_FILE.exists(), 'Output file was not written'
         expected_file = Path(TEST_DIR, 'expected_output', 'ln-output.txt')
-        assert filecmp.cmp(OUT_FILE, expected_file, shallow=False), 'Output file does not match expected output file'
+        assert compare_files(OUT_FILE, expected_file), 'Output file does not match expected output file'
 
     """
     Run the local neighborhood algorithm with a missing input file
@@ -51,9 +51,9 @@ class TestLocalNeighborhood:
     """
     def test_ln_docker(self):
         OUT_FILE.unlink(missing_ok=True)
-        LocalNeighborhood.run(network=TEST_DIR + 'input/ln-network.txt',
-                           nodes=TEST_DIR + 'input/ln-nodes.txt',
-                           output_file=OUT_FILE)
+        LocalNeighborhood.run(network=str(Path(TEST_DIR, 'input', 'ln-network.txt')),
+                           nodes=str(Path(TEST_DIR, 'input', 'ln-nodes.txt')),
+                           output_file=str(OUT_FILE))
         assert OUT_FILE.exists(), 'Output file was not written'
         expected_file = Path(TEST_DIR, 'expected_output', 'ln-output.txt')
-        assert filecmp.cmp(OUT_FILE, expected_file, shallow=False), 'Output file does not match expected output file'
+        assert compare_files(OUT_FILE, expected_file), 'Output file does not match expected output file'
