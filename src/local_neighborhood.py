@@ -24,19 +24,23 @@ class LocalNeighborhood(PRM):
         if not ('prize' in node_df.columns or 'sources' in node_df.columns or 'targets' in node_df.columns):
             raise ValueError('Local Neighborhood requires node prizes or sources or targets')
 
+        #print(node_df)
+        #print(node_df[node_df['targets'] == True]['NODEID'].values)
         node_set = set()
+        # TODO debug why the prize column is missing
         if 'prize' in node_df.columns:
             node_set.update(node_df.loc[node_df['prize'] > 0, 'NODEID'])
         if 'sources' in node_df.columns:
-            node_set.update(node_df.loc[node_df['sources'], 'NODEID'])
+            node_set.update(node_df[node_df['sources'] == True]['NODEID'].values)
         if 'targets' in node_df.columns:
-            node_set.update(node_df.loc[node_df['targets'], 'NODEID'])
-        with open(filename_map['prizes'], 'w') as f:
+            node_set.update(node_df[node_df['targets'] == True]['NODEID'].values)
+
+        with open(filename_map['nodes'], 'w') as f:
             for node in sorted(node_set):
                 f.write(f'{node}\n')
 
         edges_df = data.get_interactome()
-        edges_df.to_csv(filename_map['edges'], sep='|', index=False, columns=['Interactor1', 'Interactor2'])
+        edges_df.to_csv(filename_map['network'], sep='|', index=False, columns=['Interactor1', 'Interactor2'])
 
     @staticmethod
     def run(network=None, nodes=None, output_file=None, singularity=False):

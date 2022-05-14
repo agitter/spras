@@ -311,7 +311,7 @@ def process_config(config):
 
         # The algorithm has no named arguments so create a default placeholder
         if len(cur_params) == 0:
-            cur_params["run1"] = {"parameters": ["not applicable"]}
+            cur_params["run1"] = {"spras_placeholder": ["no parameters"]}
 
         # Each set of runs should be 1 level down in the config file
         for run_params in cur_params:
