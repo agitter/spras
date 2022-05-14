@@ -1,6 +1,7 @@
 import Dataset
 
 # supported algorithm imports
+from src.local_neighborhood import LocalNeighborhood as localneighborhood
 from src.meo import MEO as meo
 from src.omicsintegrator1 import OmicsIntegrator1 as omicsintegrator1
 from src.omicsintegrator2 import OmicsIntegrator2 as omicsintegrator2

@@ -26,16 +26,20 @@
  # careful: too many parameters might make your runs take a long time.
 
  algorithms:
-        - name: "pathlinker"
+        - name: "localneighborhood"
           params:
                 include: true
+                directed: true
+        - name: "pathlinker"
+          params:
+                include: false
                 directed: true
                 run1:
                     k: range(100,201,100)
 
         - name: "omicsintegrator1"
           params:
-                include: true
+                include: false
                 directed: false
                 run1:
                     r: [5]
@@ -46,7 +50,7 @@
 
         - name: "omicsintegrator2"
           params:
-                include: true
+                include: false
                 directed: false
                 run1:
                     b: [4]
@@ -56,7 +60,7 @@
                     g: [3]
         - name: "meo"
           params:
-                include: true
+                include: false
                 directed: true
                 run1:
                     max_path_length: [3]

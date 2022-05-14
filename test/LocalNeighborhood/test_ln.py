@@ -2,6 +2,7 @@ import filecmp
 import pytest
 import sys
 from pathlib import Path
+from src.local_neighborhood import LocalNeighborhood
 # TODO consider refactoring to simplify the import
 # Modify the path because of the - in the directory
 SPRAS_ROOT = Path(__file__).parent.parent.parent.absolute()
@@ -44,3 +45,15 @@ class TestLocalNeighborhood:
                                output_file=OUT_FILE)
 
     # Write tests for the Local Neighborhood run function here
+    """
+    Run the local neighborhood algorithm on the example input files and check the output matches the expected output
+    using the Docker container
+    """
+    def test_ln_docker(self):
+        OUT_FILE.unlink(missing_ok=True)
+        LocalNeighborhood.run(network=TEST_DIR + 'input/ln-network.txt',
+                           nodes=TEST_DIR + 'input/ln-nodes.txt',
+                           output_file=OUT_FILE)
+        assert OUT_FILE.exists(), 'Output file was not written'
+        expected_file = Path(TEST_DIR, 'expected_output', 'ln-output.txt')
+        assert filecmp.cmp(OUT_FILE, expected_file, shallow=False), 'Output file does not match expected output file'

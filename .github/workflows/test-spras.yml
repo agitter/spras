@@ -70,6 +70,7 @@ jobs:
         docker pull reedcompbio/omics-integrator-2:latest
         docker pull reedcompbio/pathlinker:latest
         docker pull reedcompbio/meo:latest
+        docker pull agitter/local-neighborhood:latest
     - name: Build Omics Integrator 1 Docker image
       uses: docker/build-push-action@v1
       with:
@@ -105,4 +106,13 @@ jobs:
         repository: reedcompbio/meo
         tags: latest
         cache_froms: reedcompbio/meo:latest
+        push: false
+    - name: Build Local Neighborhood Docker image
+      uses: docker/build-push-action@v1
+      with:
+        path: docker-wrappers/LocalNeighborhood/.
+        dockerfile: docker-wrappers/LocalNeighborhood/Dockerfile
+        repository: agitter/local-neighborhood
+        tags: latest
+        cache_froms: agitter/local-neighborhood:latest
         push: false
