@@ -30,6 +30,7 @@
           params:
                 include: true
                 directed: true
+
         - name: "pathlinker"
           params:
                 include: false
