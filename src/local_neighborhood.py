@@ -24,17 +24,16 @@ class LocalNeighborhood(PRM):
         if not ('prize' in node_df.columns or 'sources' in node_df.columns or 'targets' in node_df.columns):
             raise ValueError('Local Neighborhood requires node prizes or sources or targets')
 
-        #print(node_df)
-        #print(node_df[node_df['targets'] == True]['NODEID'].values)
         node_set = set()
         # TODO debug why the prize column is missing
         if 'prize' in node_df.columns:
-            node_set.update(node_df.loc[node_df['prize'] > 0, 'NODEID'])
+            node_set.update(node_df.loc[node_df['prize'] > 0, 'NODEID'].values)
         if 'sources' in node_df.columns:
+            # '== True' is required because the column contains NaN for some entries so it cannot be used
+            # directly as a mask
             node_set.update(node_df[node_df['sources'] == True]['NODEID'].values)
         if 'targets' in node_df.columns:
             node_set.update(node_df[node_df['targets'] == True]['NODEID'].values)
-
         with open(filename_map['nodes'], 'w') as f:
             for node in sorted(node_set):
                 f.write(f'{node}\n')
@@ -95,6 +94,6 @@ class LocalNeighborhood(PRM):
         @param raw_pathway_file: pathway file produced by an algorithm's run function
         @param standardized_pathway_file: the same pathway written in the universal format
         """
-        pathway_df = pd.read_csv(raw_pathway_file, sep='|')
+        pathway_df = pd.read_csv(raw_pathway_file, sep='|', header=None)
         pathway_df['Rank'] = 1
         pathway_df.to_csv(standardized_pathway_file, header=False, index=False, sep=' ')
