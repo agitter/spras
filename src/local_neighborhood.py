@@ -96,4 +96,5 @@ class LocalNeighborhood(PRM):
         @param standardized_pathway_file: the same pathway written in the universal format
         """
         pathway_df = pd.read_csv(raw_pathway_file, sep='|')
+        pathway_df['Rank'] = 1
         pathway_df.to_csv(standardized_pathway_file, header=False, index=False, sep=' ')
