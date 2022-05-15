@@ -25,7 +25,6 @@ class LocalNeighborhood(PRM):
             raise ValueError('Local Neighborhood requires node prizes or sources or targets')
 
         node_set = set()
-        # TODO debug why the prize column is missing
         if 'prize' in node_df.columns:
             node_set.update(node_df.loc[node_df['prize'] > 0, 'NODEID'].values)
         if 'sources' in node_df.columns:
