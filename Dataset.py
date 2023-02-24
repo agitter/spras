@@ -73,6 +73,8 @@ class Dataset:
         self.interactome = pd.read_table(os.path.join(data_loc,interactome_loc), header=None)
         num_cols = self.interactome.shape[1]
         if num_cols == 3:
+            # TODO: it may be easier for the generate_inputs implementations if this is always transformed to
+            # have a default Direction of undirected if one is not provided
             self.interactome.columns = ["Interactor1", "Interactor2", "Weight"]
         elif num_cols == 4:
             self.interactome.columns = ["Interactor1", "Interactor2", "Weight", "Direction"]

@@ -62,10 +62,12 @@ class OmicsIntegrator1(PRM):
         #Omics Integrator already gives warnings for strange prize values, so we won't here
         node_df.to_csv(filename_map['prizes'],sep='\t',index=False,columns=['NODEID','prize'],header=['name','prize'])
 
-        #For now we assume all input networks are undirected until we expand how edge tables work
         edges_df = data.get_interactome()
-        edges_df['directionality'] = 'U'
-        edges_df.to_csv(filename_map['edges'],sep='\t',index=False,columns=['Interactor1','Interactor2','Weight','directionality'],header=['protein1','protein2','weight','directionality'])
+        # The SPRAS directed edge format uses the same 'U' and 'D' convention as Omics Integrator
+        # so pass along the edge direction if one exists, otherwise make all edges undirected by default
+        if edges_df.shape[1] == 3:
+            edges_df['Direction'] = 'U'
+        edges_df.to_csv(filename_map['edges'],sep='\t',index=False,columns=['Interactor1','Interactor2','Weight','Direction'],header=['protein1','protein2','weight','directionality'])
 
 
     # TODO add parameter validation
