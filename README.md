@@ -20,6 +20,7 @@ SPRAS overview showing [PathLinker](https://github.com/Murali-group/PathLinker) 
 This branch contains partial support for directed edges.
 This feature has only been tested with Omics Integrator 1.
 Other pathway reconstruction algorithms have not been tested on this branch and should not be run.
+The `raw-pathway.txt` output file shows directed edges in the output network but the `pathway.txt` file does not.
 
 ## Installing and running SPRAS
 SPRAS requires
