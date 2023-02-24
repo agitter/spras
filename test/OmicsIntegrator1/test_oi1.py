@@ -1,7 +1,9 @@
 import pytest
 import shutil
+import subprocess
 from pathlib import Path
 from src.omicsintegrator1 import OmicsIntegrator1, write_conf
+from src.util import compare_files
 
 TEST_DIR = 'test/OmicsIntegrator1/'
 OUT_FILE = TEST_DIR+'output/test_optimalForest.sif'
@@ -91,3 +93,17 @@ class TestOmicsIntegrator1:
                              d=10,
                              singularity=True)
         assert out_path.exists()
+
+    def test_oi1_snakemake_dir(self):
+        """
+        Run Omics Integrator 1 through Snakemake and confirm the output on a directed test case matches the expected
+        output. Check the raw pathway because the SPRAS processed pathway does not track directed edges.
+        @return:
+        """
+        # Run Snakemake in a subprocess with the directed config file
+        subprocess.run(["snakemake", "--cores", "1", "--configfile", "config/dir-config.yaml"])
+        out_pathway = 'dir-data-omicsintegrator1-params-UJLAW7A/raw-pathway.txt'
+        generated_pathway = 'output/' + out_pathway
+        expected_pathway = TEST_DIR + 'expected/' + out_pathway
+
+        compare_files(generated_pathway, expected_pathway)
