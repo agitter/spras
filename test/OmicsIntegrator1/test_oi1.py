@@ -94,16 +94,19 @@ class TestOmicsIntegrator1:
                              singularity=True)
         assert out_path.exists()
 
-    def test_oi1_snakemake_dir(self):
+    def test_oi1_snakemake_directed(self):
         """
         Run Omics Integrator 1 through Snakemake and confirm the output on a directed test case matches the expected
         output. Check the raw pathway because the SPRAS processed pathway does not track directed edges.
         @return:
         """
-        # Run Snakemake in a subprocess with the directed config file
-        subprocess.run(["snakemake", "--cores", "1", "--configfile", "config/dir-config.yaml"])
         out_pathway = 'dir-data-omicsintegrator1-params-UJLAW7A/raw-pathway.txt'
         generated_pathway = 'output/' + out_pathway
+        Path(generated_pathway).unlink(missing_ok=True)
+        Path(generated_pathway.replace('raw-', '')).unlink(missing_ok=True)
+
+        # Run Snakemake in a subprocess with the directed config file
+        subprocess.run(['snakemake', '--cores', '1', '--configfile', 'config/dir-config.yaml'])
         expected_pathway = TEST_DIR + 'expected/' + out_pathway
 
-        compare_files(generated_pathway, expected_pathway)
+        assert compare_files(generated_pathway, expected_pathway), f'{generated_pathway} and {expected_pathway} do not match'
