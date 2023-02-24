@@ -23,8 +23,8 @@ This format may be deprecated.
 
 ### Edge file
 Edge files do not include a header row.
-Each row lists the two nodes that are connected with an undirected edge and a weight for that edge.
-Directed edges are not currently supported.
+If the edge file three columns, all edges are assumed to be undirected.
+In that case, each row lists the two nodes that are connected with an undirected edge and a weight for that edge.
 The weights are typically in the range [0,1] with 1 being the highest confidence for the edge.
 
 For example:
@@ -33,10 +33,21 @@ A	B	0.98
 B	C	0.77
 ```
 
+There is preliminary support for mixed graphs with both directed and undirected edges.
+In that case, the fourth column uses `U` for an undirected edge and `D` for a directed edge from the first column to the second.
+
+For example:
+```
+A	B	0.98	D
+B	C	0.77	U
+```
+
 ## Toy datasets
 The following files are very small toy datasets used to illustrate the supported file formats
 - `alternative-network.txt`
 - `alternative-targets.txt`
+- `dir-network.txt`
+- `dir-node-prizes.txt`
 - `network.txt`
 - `node-prizes.txt`
 - `sources.txt`
