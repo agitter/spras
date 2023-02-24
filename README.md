@@ -16,6 +16,11 @@ SPRAS is inspired by tools for single-cell transcriptomics such as [BEELINE](htt
 ![SPRAS overview](doc/spras-overview.png)  
 SPRAS overview showing [PathLinker](https://github.com/Murali-group/PathLinker) and [Omics Integrator](https://github.com/fraenkel-lab/OmicsIntegrator) as representative pathway reconstruction algorithms.
 
+## Warning
+This branch contains partial support for directed edges.
+This feature has only been tested with Omics Integrator 1.
+Other pathway reconstruction algorithms have not been tested on this branch and should not be run.
+
 ## Installing and running SPRAS
 SPRAS requires
 - Files in this repository

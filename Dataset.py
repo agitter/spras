@@ -70,7 +70,15 @@ class Dataset:
         data_loc = dataset_dict["data_dir"]
 
         #Load everything as pandas tables
-        self.interactome = pd.read_table(os.path.join(data_loc,interactome_loc), names = ["Interactor1","Interactor2","Weight"])
+        self.interactome = pd.read_table(os.path.join(data_loc,interactome_loc), header=None)
+        num_cols = self.interactome.shape[1]
+        if num_cols == 3:
+            self.interactome.columns = ["Interactor1", "Interactor2", "Weight"]
+        elif num_cols == 4:
+            self.interactome.columns = ["Interactor1", "Interactor2", "Weight", "Direction"]
+        else:
+            raise ValueError(f'edge_files must have three or four columns but found {num_cols}')
+
         node_set = set(self.interactome.Interactor1.unique())
         node_set = node_set.union(set(self.interactome.Interactor2.unique()))
 
