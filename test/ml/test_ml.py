@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-import src.analysis.ml as ml
+import spras.analysis.ml as ml
 
 INPUT_DIR = 'test/ml/input/'
 OUT_DIR = 'test/ml/output/'
@@ -21,9 +21,9 @@ class TestML:
     def test_summarize_networks(self):
         dataframe = ml.summarize_networks([INPUT_DIR + 'test-data-s1/s1.txt', INPUT_DIR + 'test-data-s2/s2.txt', INPUT_DIR + 'test-data-s3/s3.txt',
                                            INPUT_DIR + 'test-data-longName/longName.txt', INPUT_DIR + 'test-data-longName2/longName2.txt',
-                                           INPUT_DIR + 'test-data-empty/empty.txt', INPUT_DIR + 'test-data-spaces/spaces.txt'])
+                                           INPUT_DIR + 'test-data-empty/empty.txt', INPUT_DIR + 'test-data-spaces/spaces.txt', INPUT_DIR + 'test-mixed-direction/mixed-direction.txt'])
         dataframe.to_csv(OUT_DIR + 'dataframe.csv')
-        assert filecmp.cmp(OUT_DIR + 'dataframe.csv', EXPECT_DIR + 'expected-dataframe.csv')
+        assert filecmp.cmp(OUT_DIR + 'dataframe.csv', EXPECT_DIR + 'expected-dataframe.csv', shallow=False)
 
     def test_pca(self):
         dataframe = ml.summarize_networks([INPUT_DIR + 'test-data-s1/s1.txt', INPUT_DIR + 'test-data-s2/s2.txt', INPUT_DIR + 'test-data-s3/s3.txt'])
@@ -40,16 +40,16 @@ class TestML:
         dataframe = ml.summarize_networks([INPUT_DIR + 'test-data-s1/s1.txt', INPUT_DIR + 'test-data-s2/s2.txt', INPUT_DIR + 'test-data-s3/s3.txt'])
         ml.hac_horizontal(dataframe, OUT_DIR + 'hac-horizontal.png', OUT_DIR + 'hac-clusters-horizontal.txt')
 
-        assert filecmp.cmp(OUT_DIR + 'hac-clusters-horizontal.txt', EXPECT_DIR + 'expected-hac-horizontal-clusters.txt')
+        assert filecmp.cmp(OUT_DIR + 'hac-clusters-horizontal.txt', EXPECT_DIR + 'expected-hac-horizontal-clusters.txt', shallow=False)
 
     def test_hac_vertical(self):
         dataframe = ml.summarize_networks([INPUT_DIR + 'test-data-s1/s1.txt', INPUT_DIR + 'test-data-s2/s2.txt', INPUT_DIR + 'test-data-s3/s3.txt'])
         ml.hac_vertical(dataframe, OUT_DIR + 'hac-vertical.png', OUT_DIR + 'hac-clusters-vertical.txt')
 
-        assert filecmp.cmp(OUT_DIR + 'hac-clusters-vertical.txt', EXPECT_DIR + 'expected-hac-vertical-clusters.txt')
+        assert filecmp.cmp(OUT_DIR + 'hac-clusters-vertical.txt', EXPECT_DIR + 'expected-hac-vertical-clusters.txt', shallow=False)
 
     def test_ensemble_network(self):
-        dataframe = ml.summarize_networks([INPUT_DIR + 'test-data-s1/s1.txt', INPUT_DIR + 'test-data-s2/s2.txt', INPUT_DIR + 'test-data-s3/s3.txt'])
+        dataframe = ml.summarize_networks([INPUT_DIR + 'test-data-s1/s1.txt', INPUT_DIR + 'test-data-s2/s2.txt', INPUT_DIR + 'test-data-s3/s3.txt', INPUT_DIR + 'test-mixed-direction/mixed-direction.txt'])
         ml.ensemble_network(dataframe, OUT_DIR + 'ensemble-network.tsv')
 
         en = pd.read_table(OUT_DIR + 'ensemble-network.tsv')
